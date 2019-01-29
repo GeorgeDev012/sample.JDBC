@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JDBCController">
+   <children>
+       <HBox>
+          <ChoiceBox fx:id="choiceBox1" layoutX="14.0" layoutY="14.0" prefWidth="150.0">
+              <items>
+                  <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Select * from" />
+                      <String fx:value="Delete" />
+                      <String fx:value="Update" />
+                      <String fx:value="Insert into" />
+                  </FXCollections>
+              </items>
+          </ChoiceBox>
+          <ChoiceBox fx:id="choiceBox2" layoutX="225.0" layoutY="14.0" prefWidth="150.0" />
+          <ChoiceBox layoutX="436.0" layoutY="14.0" prefWidth="150.0" value="" />
+          <Button fx:id="button" layoutX="274.0" layoutY="71.0" mnemonicParsing="false" onAction="#handleSubmitButtonAction" text="Button" />
+       </HBox>
+      <TableView fx:id="tableView1" prefHeight="370.0" prefWidth="600.0">
+        <columns>
+        </columns>
+      </TableView>
+   </children>
+</VBox>

@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+    id 'distribution'
+}
+
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://www.oracle.com/content/secure/maven/content'
+        credentials {
+            username=""
+            password=""
+        }
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile 'com.oracle.jdbc:ojdbc8:12.2.0.1'
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.0.Final'
+}
+
+distributions {
+    main {
+        contents {
+            from configurations.compile
+        }
+    }
+}
