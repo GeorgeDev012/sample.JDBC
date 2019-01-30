@@ -9,9 +9,24 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
 <VBox prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JDBCController">
    <children>
        <HBox>
+          <MenuBar>
+              <menus>
+                  <Menu text="Menu">
+                      <items>
+                          <MenuItem text="Select" onAction="#selectMenu"/>
+                          <MenuItem text="Insert" onAction="#insertMenu"/>
+                          <MenuItem text="Update" onAction="#updateMenu"/>
+                          <MenuItem text="Delete" onAction="#deleteMenu"/>
+                      </items>
+                  </Menu>
+              </menus>
+          </MenuBar>
           <ChoiceBox fx:id="choiceBox1" layoutX="14.0" layoutY="14.0" prefWidth="150.0">
               <items>
                   <FXCollections fx:factory="observableArrayList">

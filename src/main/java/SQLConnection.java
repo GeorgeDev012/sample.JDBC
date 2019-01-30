@@ -1,38 +1,53 @@
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableColumn;
+import javafx.util.Callback;
+import oracle.jdbc.OracleTranslatingConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SQLConnection {
-    private Connection con;
+    private ObservableList<ObservableList> data;
     private Statement st;
+    private ResultSetMetaData rsmd;
+    private int rowCount;
+    private static Connection con;
     private ResultSet rs;
 
-    void getConnection() {
 
+    static Connection getConnection() { Connection con = null;
         try{
             Class.forName("oracle.jdbc.driver.OracleDriver");
             con = DriverManager.getConnection("jdbc:oracle:thin:@155.158.112.45:1521:oltpstud","ziibd38","haslo2018");
-
-
-            st = con.prepareStatement("Select * from employees");
-            rs = ((PreparedStatement) st).executeQuery();
-
-            rs.next();
-            System.out.println(rs.getString(2) + " " + rs.getString(3));
+;
         }catch(Exception ex){
             System.out.println("Error" + ex);
         }
+        return con;
+    }
+
+    void setConnection() {
+        try {
+            con = DriverManager.getConnection("jdbc:oracle:thin:@155.158.112.45:1521:oltpstud","ziibd38","haslo2018");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        ;
     }
 
     ObservableList<String> getTablesName() {
         ObservableList<String> list = FXCollections.observableArrayList();
         try {
-            st = con.prepareStatement("select table_name from user_tables");
-            rs = ((PreparedStatement) st).executeQuery();
+            setConnection();
+            rs = con.
+                    createStatement().
+                    executeQuery("select table_name from user_tables");
             while(rs.next()) {
                 list.add(rs.getString(1));
             }
@@ -43,17 +58,37 @@ public class SQLConnection {
         return list;
     }
 
+    void setRowCount(String tableName) {
+        int rowCount = 0;
+        try {
+            st = con.prepareStatement("select count(1) from " + tableName);
+            rs = ((PreparedStatement) st).executeQuery();
+            rs.next();
+            rowCount = rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        this.rowCount = rowCount;
+    }
+
     public String[][] getContentFromDatabase(String statement) {
         String[][] strings = null;
         try {
             st = con.prepareStatement(statement);
             rs = ((PreparedStatement) st).executeQuery();
+            rsmd = rs.getMetaData();
+            strings = new String[rowCount][];
 
-            int i = 0;
-            int j = 0;
+
+            int j = 0;;
             while(rs.next()) {
-                strings[i][j] = new String();
-                i++;
+                String[] strings2 = new String[rowCount];
+                for(int i = 1; i <= rsmd.getColumnCount(); i++) {;
+
+                    strings2[i-1] = rs.getString(i);
+                }
+                strings[j] = strings2;
+                j++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,19 +96,6 @@ public class SQLConnection {
         return strings;
     }
 
-    TableColumn[] getColumns() {
-        ResultSetMetaData rsmd = null;
-        TableColumn[] tableColumns = null;
-        try {
-            rsmd = rs.getMetaData();
-            tableColumns = new TableColumn[rsmd.getColumnCount()];
-            for(int i = 1; i <= rsmd.getColumnCount(); i++) {
-                tableColumns[i-1] = new TableColumn(rsmd.getColumnName(i));
-                System.out.println(i);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return tableColumns;
-    }
+
+
 }
