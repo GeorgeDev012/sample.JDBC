@@ -1,5 +1,6 @@
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -20,7 +21,7 @@ public class SelectController implements Initializable {
     @FXML Label tableLabel;
     @FXML ChoiceBox<String> tablesChoiceBox;
     private String tableLabelValue = "a";
-
+    String statement;
 
 
     @Override
@@ -50,5 +51,18 @@ public class SelectController implements Initializable {
         tableLabel.setText(text);
     }
 
-
+    @FXML
+    public void onMouseClicked(ActionEvent e) {
+        CheckBox[] boxes = MainController.getColumnCheckBoxes();
+        StringBuilder statement = new StringBuilder();
+        statement.append("select ");
+        for (CheckBox box : boxes) {
+            if (box.isSelected()) {
+                statement.append(box.getText()).append(", ");
+            }
+        }
+        statement.setLength(statement.length() - 2);
+        statement.append(" from ").append(tableLabel.getText());
+        this.statement = statement.toString();
+    }
 }

@@ -37,6 +37,7 @@ public class MainController implements Initializable {
     private ResultSetMetaData rsmd;
     private int rowCount;
     private boolean isOpen = false;
+    private static CheckBox[] columnCheckBoxes;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -44,7 +45,7 @@ public class MainController implements Initializable {
 
         sqlCon = new SQLConnection();
         sqlCon.getConnection();
-        ObservableList<String> abc = sqlCon.getTablesName();
+        ObservableList<String> abc = sqlCon.getTablesNames();
         choiceBox2.setItems(abc);
     }
 
@@ -94,14 +95,14 @@ public class MainController implements Initializable {
     @FXML void selectMenu() {
         try {
             if(!isOpen) {
-                VBox root2 = new VBox();
-                root2.setAlignment(Pos.CENTER);
+                VBox root = new VBox();
+                root.setAlignment(Pos.CENTER);
                 Button chooseButton = new Button("Submit");
                 Label chooseLabel = new Label("Choose Table");
                 chooseLabel.setFont(new Font(24));
-                root2.getChildren().addAll(chooseLabel, choiceBox2, chooseButton);
+                root.getChildren().addAll(chooseLabel, choiceBox2, chooseButton);
                 Stage stage = new Stage();
-                Scene scene = new Scene(root2);
+                Scene scene = new Scene(root);
                 stage.setScene(scene);
                 stage.setResizable(false);
                 stage.show();
@@ -111,8 +112,8 @@ public class MainController implements Initializable {
                 isOpen = true;
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                AnchorPane root = fxmlLoader.load(getClass().getResource("SelectView.fxml").openStream());
-                Scene scene2 = new Scene(root);
+                AnchorPane root2 = fxmlLoader.load(getClass().getResource("SelectView.fxml").openStream());
+                Scene scene2 = new Scene(root2);
                 chooseButton.setOnAction(e -> {
                     if(choiceBox2.getValue() != null) {
                         SelectController selectController = fxmlLoader.getController();
@@ -120,8 +121,8 @@ public class MainController implements Initializable {
                         selectController.setTableLabelText(choiceBoxValue);
                         List<String> list = sqlCon.getColumnNames(choiceBoxValue);
                         String[] columnNames =  list.toArray(new String[list.size()]);
-                        CheckBox[] columnCheckBoxes = setCheckBoxesLayout(Utilities.getCheckBoxes(columnNames));
-                        root.getChildren().addAll(columnCheckBoxes);
+                        columnCheckBoxes = setCheckBoxesLayout(Utilities.getCheckBoxes(columnNames));
+                        root2.getChildren().addAll(columnCheckBoxes);
                         //System.out.println(choiceBox2.getValue());
                         stage.setScene(scene2);
                         choiceBox2.setValue(null);
@@ -141,6 +142,10 @@ public class MainController implements Initializable {
             checkBoxes[i].setLayoutY(18 + i*30);
         }
         return checkBoxes;
+    }
+
+    static CheckBox[] getColumnCheckBoxes() {
+        return columnCheckBoxes;
     }
 
     @FXML void insertMenu() {

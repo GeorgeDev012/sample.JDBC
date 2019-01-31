@@ -22,7 +22,7 @@
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <Button layoutX="478.0" layoutY="18.0" mnemonicParsing="false" text="Submit">
+      <Button layoutX="505.0" layoutY="12.0" mnemonicParsing="false" onAction="#onMouseClicked" text="Submit">
          <font>
             <Font size="18.0" />
          </font></Button>

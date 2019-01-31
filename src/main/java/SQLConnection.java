@@ -16,7 +16,7 @@ public class SQLConnection {
     private ObservableList<ObservableList> data;
     private Statement st;
     private ResultSetMetaData rsmd;
-    private int rowCount;
+    private static int rowCount;
     private static Connection con;
     private ResultSet rs;
 
@@ -38,10 +38,9 @@ public class SQLConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        ;
     }
 
-    ObservableList<String> getTablesName() {
+    ObservableList<String> getTablesNames() {
         ObservableList<String> list = FXCollections.observableArrayList();
         try {
             setConnection();
@@ -71,17 +70,35 @@ public class SQLConnection {
         return list;
     }
 
+    static String[][] getQueryResults(String statement) {
+        String[][] queryResults = new String[rowCount][];
+        try {
+            con = DriverManager.getConnection("jdbc:oracle:thin:@155.158.112.45:1521:oltpstud","ziibd38","haslo2018");
+            ResultSet rs = con.createStatement().executeQuery(statement);
+            int j = 0;
+            while(rs.next()) {
+                for(int i=0; i<rs.getMetaData().getColumnCount(); i++) {
+                    queryResults[j][i] = rs.getString(i+1);
+                }
+                j++;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return queryResults;
+    }
+
     void setRowCount(String tableName) {
         int rowCount = 0;
         try {
-            st = con.prepareStatement("select count(1) from " + tableName);
-            rs = ((PreparedStatement) st).executeQuery();
+            rs = con.createStatement().executeQuery("select count(1) from " + tableName);
             rs.next();
             rowCount = rs.getInt(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        this.rowCount = rowCount;
+        SQLConnection.rowCount = rowCount;
     }
 
     public String[][] getContentFromDatabase(String statement) {
