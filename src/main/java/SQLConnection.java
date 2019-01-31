@@ -45,9 +45,22 @@ public class SQLConnection {
         ObservableList<String> list = FXCollections.observableArrayList();
         try {
             setConnection();
-            rs = con.
-                    createStatement().
-                    executeQuery("select table_name from user_tables");
+            rs = con.createStatement().executeQuery("select table_name from user_tables");
+            while(rs.next()) {
+                list.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    ObservableList<String> getColumnNames(String tableName) {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        try {
+            setConnection();
+            rs = con.createStatement().executeQuery("select column_name from user_tab_columns where table_name = '" + tableName + "'");
             while(rs.next()) {
                 list.add(rs.getString(1));
             }
