@@ -55,7 +55,7 @@ public class MainController implements Initializable {
         populateTableView(statement);
     }
 
-    private void populateTableView(String statement) {
+     void populateTableView(String statement) {
         TableColumn[] tableColumns = null;
         try {
             con = SQLConnection.getConnection();

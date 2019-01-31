@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class JDBC extends Application {
-
+    static FXMLLoader fxmlLoader;
 
     public static void main(String[] args) {
         launch(args);
@@ -16,7 +16,8 @@ public class JDBC extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException, InterruptedException {
-        VBox root = FXMLLoader.load(getClass().getResource("mainView.fxml"));
+        fxmlLoader = new FXMLLoader();
+        VBox root = fxmlLoader.load(getClass().getResource("mainView.fxml").openStream());
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
