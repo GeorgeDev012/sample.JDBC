@@ -33,11 +33,13 @@ public class MainController implements Initializable {
     boolean isOpen = false;
     static CheckBox[] columnCheckBoxes;
     static Stage selectStage;
+    static byte menuChoice;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         sqlCon = new SQLConnection();
         sqlCon.setConnection();
+        selectStage = new Stage();
     }
 
      void populateTableView(String statement) {
@@ -68,7 +70,6 @@ public class MainController implements Initializable {
                 for(int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
                     row.add(rs.getString(i));
                 }
-                System.out.println(row);
                 data.add(row);
             }
         } catch (SQLException e) {
@@ -78,10 +79,34 @@ public class MainController implements Initializable {
     }
 
     @FXML void selectMenu() {
+        loadChoiceView();
+        menuChoice = 1;
+
+    }
+
+    static CheckBox[] getColumnCheckBoxes() {
+        return columnCheckBoxes;
+    }
+
+    @FXML void insertMenu() {
+        loadChoiceView();
+        menuChoice = 2;
+    }
+
+    @FXML void updateMenu() {
+        loadChoiceView();
+        menuChoice = 3;
+    }
+
+    @FXML void deleteMenu() {
+        loadChoiceView();
+        menuChoice = 4;
+    }
+
+    private void loadChoiceView() {
         try {
             if(!isOpen) {
                 VBox root = FXMLLoader.load(getClass().getResource("chooseTableView.fxml"));
-                selectStage = new Stage();
                 Scene scene = new Scene(root);
                 selectStage.setScene(scene);
                 selectStage.setResizable(false);
@@ -91,30 +116,11 @@ public class MainController implements Initializable {
                 });
 
                 isOpen = true;
-
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-    static CheckBox[] getColumnCheckBoxes() {
-        return columnCheckBoxes;
-    }
-
-    @FXML void insertMenu() {
-
-    }
-
-    @FXML void updateMenu() {
-
-    }
-
-    @FXML void deleteMenu() {
-
-    }
-
-
 
 
 
