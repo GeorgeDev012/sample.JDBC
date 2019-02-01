@@ -21,7 +21,6 @@ public class SelectController implements Initializable {
     @FXML Label tableLabel;
     @FXML ChoiceBox<String> tablesChoiceBox;
     private String tableLabelValue = "a";
-    String statement;
 
 
     @Override
@@ -63,8 +62,9 @@ public class SelectController implements Initializable {
         }
         statement.setLength(statement.length() - 2);
         statement.append(" from ").append(tableLabel.getText());
-        this.statement = statement.toString();
         MainController controller = JDBC.fxmlLoader.getController();
         controller.populateTableView(statement.toString());
+        controller.selectStage.close();
+        controller.isOpen = false;
     }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ChooseTableController">
+    <children>
+        <Label text="Choose table">
+         <font>
+            <Font size="24.0" />
+         </font>
+        </Label>
+        <ChoiceBox fx:id="tableChoiceBox" />
+        <Button onAction="#chooseButtonAction" text="Submit" />
+    </children>
+</VBox>

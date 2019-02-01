@@ -27,19 +27,6 @@
                   </Menu>
               </menus>
           </MenuBar>
-          <ChoiceBox fx:id="choiceBox1" layoutX="14.0" layoutY="14.0" prefWidth="150.0">
-              <items>
-                  <FXCollections fx:factory="observableArrayList">
-                      <String fx:value="Select * from" />
-                      <String fx:value="Delete" />
-                      <String fx:value="Update" />
-                      <String fx:value="Insert into" />
-                  </FXCollections>
-              </items>
-          </ChoiceBox>
-          <ChoiceBox fx:id="choiceBox2" layoutX="225.0" layoutY="14.0" prefWidth="150.0" />
-          <ChoiceBox layoutX="436.0" layoutY="14.0" prefWidth="150.0" value="" />
-          <Button fx:id="button" layoutX="274.0" layoutY="71.0" mnemonicParsing="false" onAction="#handleSubmitButtonAction" text="Button" />
        </HBox>
       <TableView fx:id="tableView1" prefHeight="370.0" prefWidth="600.0">
         <columns>

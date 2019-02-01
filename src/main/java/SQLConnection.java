@@ -21,11 +21,14 @@ public class SQLConnection {
     private ResultSet rs;
 
 
-    static Connection getConnection() { Connection con = null;
+    static Connection getConnection() {
         try{
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-            con = DriverManager.getConnection("jdbc:oracle:thin:@155.158.112.45:1521:oltpstud","ziibd38","haslo2018");
-;
+            if(con == null) {
+                Class.forName("oracle.jdbc.driver.OracleDriver");
+                con = DriverManager.getConnection(
+                        "jdbc:oracle:thin:@155.158.112.45:1521:oltpstud",
+                        "ziibd38","haslo2018");;
+            }
         }catch(Exception ex){
             System.out.println("Error" + ex);
         }
@@ -34,7 +37,7 @@ public class SQLConnection {
 
     void setConnection() {
         try {
-            con = DriverManager.getConnection("jdbc:oracle:thin:@155.158.112.45:1521:oltpstud","ziibd38","haslo2018");
+            if(con == null) con = DriverManager.getConnection("jdbc:oracle:thin:@155.158.112.45:1521:oltpstud","ziibd38","haslo2018");
         } catch (SQLException e) {
             e.printStackTrace();
         }
