@@ -17,12 +17,12 @@ import java.util.ResourceBundle;
 public class ChooseTableController implements Initializable {
     @FXML public ChoiceBox<String> tableChoiceBox;
 
-    SQLConnection sqlCon;
+    private SQLConnection sqlCon;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         sqlCon = new SQLConnection();
-        sqlCon.getConnection();
+        sqlCon.setConnection();
         ObservableList<String> abc = sqlCon.getTablesNames();
         tableChoiceBox.setItems(abc);
     }
@@ -32,21 +32,22 @@ public class ChooseTableController implements Initializable {
         AnchorPane root2 = null;
         try {
             root2 = fxmlLoader.load(getClass().getResource("SelectView.fxml").openStream());
+
+            Scene scene2 = new Scene(root2);
+            if(tableChoiceBox.getValue() != null) {
+                SelectController selectController = fxmlLoader.getController();
+                String choiceBoxValue = tableChoiceBox.getValue().toString();
+                selectController.setTableLabelText(choiceBoxValue);
+                List<String> list = sqlCon.getColumnNames(choiceBoxValue);
+                String[] columnNames =  list.toArray(new String[list.size()]);
+                MainController.columnCheckBoxes = setCheckBoxesLayout(Utilities.getCheckBoxes(columnNames));
+                root2.getChildren().addAll(MainController.columnCheckBoxes);
+                //System.out.println(choiceBox2.getValue());
+                MainController.selectStage.setScene(scene2);
+                tableChoiceBox.setValue(null);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        Scene scene2 = new Scene(root2);
-        if(tableChoiceBox.getValue() != null) {
-            SelectController selectController = fxmlLoader.getController();
-            String choiceBoxValue = tableChoiceBox.getValue().toString();
-            selectController.setTableLabelText(choiceBoxValue);
-            List<String> list = sqlCon.getColumnNames(choiceBoxValue);
-            String[] columnNames =  list.toArray(new String[list.size()]);
-            MainController.columnCheckBoxes = setCheckBoxesLayout(Utilities.getCheckBoxes(columnNames));
-            root2.getChildren().addAll(MainController.columnCheckBoxes);
-            //System.out.println(choiceBox2.getValue());
-            MainController.selectStage.setScene(scene2);
-            tableChoiceBox.setValue(null);
         }
     }
 

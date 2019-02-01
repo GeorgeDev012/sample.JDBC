@@ -17,21 +17,11 @@ public class SQLConnection {
     private Statement st;
     private ResultSetMetaData rsmd;
     private static int rowCount;
-    private static Connection con;
+    private Connection con;
     private ResultSet rs;
 
 
-    static Connection getConnection() {
-        try{
-            if(con == null) {
-                Class.forName("oracle.jdbc.driver.OracleDriver");
-                con = DriverManager.getConnection(
-                        "jdbc:oracle:thin:@155.158.112.45:1521:oltpstud",
-                        "ziibd38","haslo2018");;
-            }
-        }catch(Exception ex){
-            System.out.println("Error" + ex);
-        }
+    Connection getConnection() {
         return con;
     }
 
@@ -73,10 +63,10 @@ public class SQLConnection {
         return list;
     }
 
-    static String[][] getQueryResults(String statement) {
+    String[][] getQueryResults(String statement) {
         String[][] queryResults = new String[rowCount][];
         try {
-            con = DriverManager.getConnection("jdbc:oracle:thin:@155.158.112.45:1521:oltpstud","ziibd38","haslo2018");
+            setConnection();
             ResultSet rs = con.createStatement().executeQuery(statement);
             int j = 0;
             while(rs.next()) {
@@ -102,31 +92,6 @@ public class SQLConnection {
             e.printStackTrace();
         }
         SQLConnection.rowCount = rowCount;
-    }
-
-    public String[][] getContentFromDatabase(String statement) {
-        String[][] strings = null;
-        try {
-            st = con.prepareStatement(statement);
-            rs = ((PreparedStatement) st).executeQuery();
-            rsmd = rs.getMetaData();
-            strings = new String[rowCount][];
-
-
-            int j = 0;;
-            while(rs.next()) {
-                String[] strings2 = new String[rowCount];
-                for(int i = 1; i <= rsmd.getColumnCount(); i++) {;
-
-                    strings2[i-1] = rs.getString(i);
-                }
-                strings[j] = strings2;
-                j++;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return strings;
     }
 
 

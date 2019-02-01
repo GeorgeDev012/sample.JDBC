@@ -19,31 +19,13 @@ public class SelectController implements Initializable {
     @FXML Label selectLabel;
     @FXML Label fromLabel;
     @FXML Label tableLabel;
-    @FXML ChoiceBox<String> tablesChoiceBox;
-    private String tableLabelValue = "a";
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         SQLConnection sqlCon = new SQLConnection();
-        sqlCon.getConnection();
-        System.out.println("abc");
-        tableLabel.setText(tableLabelValue);
-        //ObservableList<String> abc = sqlCon.getTablesName();
-        //tablesChoiceBox.setItems(abc);
-        //Stage stage = (Stage) tablesChoiceBox.getScene().getWindow();
-        //setTablesChoiceBoxOnAction();
+        sqlCon.setConnection();
 
-    }
-
-    private void setTablesChoiceBoxOnAction () {
-        Stage stage = (Stage) tablesChoiceBox.getScene().getWindow();
-        tablesChoiceBox.getSelectionModel()
-                .selectedItemProperty()
-                .addListener( (ObservableValue<? extends String> observable, String oldValue, String newValue) ->
-
-                        stage.setScene(new Scene(new StackPane(),300,300))
-                       );
     }
 
     void setTableLabelText(String text) {
@@ -64,7 +46,7 @@ public class SelectController implements Initializable {
         statement.append(" from ").append(tableLabel.getText());
         MainController controller = JDBC.fxmlLoader.getController();
         controller.populateTableView(statement.toString());
-        controller.selectStage.close();
+        MainController.selectStage.close();
         controller.isOpen = false;
     }
 }

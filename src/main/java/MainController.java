@@ -25,43 +25,28 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    @FXML private ChoiceBox choiceBox1;
-    @FXML private Button button;
-    @FXML private ChoiceBox choiceBox2;
+
     @FXML private TableView tableView1;
-    SQLConnection sqlCon;
-    private Connection con;
+
+    private SQLConnection sqlCon;
     private ObservableList<ObservableList> data;
-    private Statement st;
-    private ResultSet rs;
-    private ResultSetMetaData rsmd;
-    private int rowCount;
     boolean isOpen = false;
     static CheckBox[] columnCheckBoxes;
     static Stage selectStage;
-    static FXMLLoader fxmlLoader;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         sqlCon = new SQLConnection();
-        sqlCon.getConnection();
-
-        //choiceBox2.setItems(abc);
-    }
-
-    @FXML private void handleSubmitButtonAction(ActionEvent e) {
-        String statement = choiceBox1.getValue() + " " + choiceBox2.getValue();
-        //sqlCon.setRowCount(choiceBox2.getValue() + "");
-        populateTableView(statement);
+        sqlCon.setConnection();
     }
 
      void populateTableView(String statement) {
         TableColumn[] tableColumns = null;
         try {
-            con = SQLConnection.getConnection();
-            rs = con.createStatement().executeQuery(statement);
+            ResultSet rs = sqlCon.getConnection().createStatement().executeQuery(statement);
+
             data = FXCollections.observableArrayList();
-            rsmd = rs.getMetaData();
+            ResultSetMetaData rsmd = rs.getMetaData();
             tableColumns = new TableColumn[rsmd.getColumnCount()];
             tableView1.getColumns().clear();
             for(int i = 0; i < rsmd.getColumnCount(); i++) {
@@ -107,30 +92,11 @@ public class MainController implements Initializable {
 
                 isOpen = true;
 
-//                fxmlLoader = new FXMLLoader();
-//                AnchorPane root2 = fxmlLoader.load(getClass().getResource("SelectView.fxml").openStream());
-//                Scene scene2 = new Scene(root2);
-//                chooseButton.setOnAction(e -> {
-//                    if(choiceBox2.getValue() != null) {
-//                        SelectController selectController = fxmlLoader.getController();
-//                        String choiceBoxValue = choiceBox2.getValue().toString();
-//                        selectController.setTableLabelText(choiceBoxValue);
-//                        List<String> list = sqlCon.getColumnNames(choiceBoxValue);
-//                        String[] columnNames =  list.toArray(new String[list.size()]);
-//                        columnCheckBoxes = setCheckBoxesLayout(Utilities.getCheckBoxes(columnNames));
-//                        root2.getChildren().addAll(columnCheckBoxes);
-//                        //System.out.println(choiceBox2.getValue());
-//                        selectStage.setScene(scene2);
-//                        choiceBox2.setValue(null);
-//                    }
-//                });
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 
     static CheckBox[] getColumnCheckBoxes() {
         return columnCheckBoxes;
