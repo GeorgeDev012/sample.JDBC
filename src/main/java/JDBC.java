@@ -19,6 +19,7 @@ public class JDBC extends Application {
         fxmlLoader = new FXMLLoader();
         VBox root = fxmlLoader.load(getClass().getResource("mainView.fxml").openStream());
         Scene scene = new Scene(root);
+        primaryStage.setTitle("Database connection");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

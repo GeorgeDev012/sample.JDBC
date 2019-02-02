@@ -108,6 +108,15 @@ public class SQLConnection {
         return rowCount;
     }
 
+    void insert(String statement) {
+        try {
+            rs = con.createStatement().executeQuery(statement);
+            //message from database
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 }

@@ -14,6 +14,6 @@
             </font>
         </Label>
       <VBox fx:id="columnsVBox" layoutX="105.0" layoutY="40.0" prefHeight="200.0" prefWidth="150.0" />
-      <Button layoutX="274.0" layoutY="47.0" mnemonicParsing="false" text="Submit" />
+      <Button layoutX="274.0" layoutY="43.0" mnemonicParsing="false" text="Submit" onAction="#insertButtonAction"/>
     </children>
 </AnchorPane>

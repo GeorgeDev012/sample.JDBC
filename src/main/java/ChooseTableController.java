@@ -75,8 +75,6 @@ public class ChooseTableController implements Initializable {
                 root = fxmlLoader.load(getClass().getResource("InsertView.fxml").openStream());
                 Scene scene2 = new Scene(root);
 
-                //InsertController insertController = fxmlLoader.getController();
-                //insertController.setTableName(tableNameChoiceBox.getValue());
                 MainController.secondStage.setScene(scene2);
             }
 
