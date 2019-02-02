@@ -7,6 +7,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -17,6 +19,7 @@ public class InsertController implements Initializable {
 
     private String tableName;
     private SQLConnection sqlCon;
+    private ResultSet resultSet;
 
     InsertController(String tableName) {
         this.tableName = tableName;
@@ -27,6 +30,8 @@ public class InsertController implements Initializable {
         sqlCon = new SQLConnection();
         sqlCon.setConnection();
         addColumnsToVBox(sqlCon.getColumnNames(tableName));
+        System.out.println(tableName);
+        resultSet = (sqlCon.getResultSetOfColumns(tableName));
         insertIntoTableLabel.setText("Insert into " + tableName + "\n values");
     }
 
@@ -40,21 +45,42 @@ public class InsertController implements Initializable {
     }
 
     @FXML void insertButtonAction() {
-        TextField a = (TextField)(columnsVBox.getChildren().get(0));
-        System.out.println(a.getText());
         StringBuilder stringBuilder = new StringBuilder("Insert into " + tableName + " values (");
 
-        for(Node columnName :  columnsVBox.getChildren()) {
+        boolean[] varCharColumns = isVarChar();
+
+        int i = 0;
+        for(Node columnName : columnsVBox.getChildren()) {
             if(columnName instanceof TextField) {
                 if( ((TextField) columnName).getText().equals("")) stringBuilder.append("null");
+                else if(varCharColumns[i]){
+                    stringBuilder.append('\'').append(( (TextField) columnName).getText()).append('\'');
+                }
                 else stringBuilder.append(( (TextField) columnName).getText());
                 stringBuilder.append(", ");
             }
+            i++;
         }
+
+
         stringBuilder.setLength(stringBuilder.length() - 2);
         stringBuilder.append(")");
-        String statement = stringBuilder.toString();;
+        String statement = stringBuilder.toString();
         sqlCon.insert(statement);
+    }
+
+    boolean[] isVarChar() {
+        boolean[] isVarChar = null;
+        try {
+             isVarChar = new boolean[resultSet.getMetaData().getColumnCount()];
+             for(int i = 0; i < resultSet.getMetaData().getColumnCount(); i++) {
+                 isVarChar[i] = resultSet.getMetaData().getColumnClassName(i + 1).equals("java.lang.String");
+                 System.out.println(isVarChar[i]);
+             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isVarChar;
     }
 
 }

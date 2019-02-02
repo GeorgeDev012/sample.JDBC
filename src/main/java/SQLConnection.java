@@ -63,6 +63,16 @@ public class SQLConnection {
         return list;
     }
 
+    ResultSet getResultSetOfColumns(String tableName) {
+        ResultSet resultSet = null;
+        try {
+            resultSet = con.createStatement().executeQuery("select * from " + tableName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
+    }
+
     String[][] getQueryResults(String statement) {
         String[][] queryResults = new String[rowCount][];
         try {
