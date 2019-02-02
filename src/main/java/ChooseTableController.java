@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChooseTableController implements Initializable {
-    @FXML public ChoiceBox<String> tableChoiceBox;
+    @FXML public ChoiceBox<String> tableNameChoiceBox;
 
     private SQLConnection sqlCon;
 
@@ -24,7 +24,8 @@ public class ChooseTableController implements Initializable {
         sqlCon = new SQLConnection();
         sqlCon.setConnection();
         ObservableList<String> abc = sqlCon.getTablesNames();
-        tableChoiceBox.setItems(abc);
+        System.out.println(tableNameChoiceBox + " " + abc);
+        tableNameChoiceBox.setItems(abc);
     }
 
     @FXML public void chooseButtonAction(ActionEvent actionEvent) {
@@ -42,21 +43,22 @@ public class ChooseTableController implements Initializable {
 
     private void selectMenuItem() {
         FXMLLoader fxmlLoader = new FXMLLoader();
-        AnchorPane root;
         try {
-            root = fxmlLoader.load(getClass().getResource("SelectView.fxml").openStream());
 
-            Scene scene2 = new Scene(root);
-            if(tableChoiceBox.getValue() != null) {
+            AnchorPane root;
+            if(tableNameChoiceBox.getValue() != null) {
+                root = fxmlLoader.load(getClass().getResource("SelectView.fxml").openStream());
+
+                Scene scene2 = new Scene(root);
                 SelectController selectController = fxmlLoader.getController();
-                String choiceBoxValue = tableChoiceBox.getValue();
+                String choiceBoxValue = tableNameChoiceBox.getValue();
                 selectController.setTableLabelText(choiceBoxValue);
                 List<String> list = sqlCon.getColumnNames(choiceBoxValue);
                 String[] columnNames =  list.toArray(new String[0]);
                 MainController.columnCheckBoxes = setCheckBoxesLayout(Utilities.getCheckBoxes(columnNames));
                 root.getChildren().addAll(MainController.columnCheckBoxes);
-                MainController.selectStage.setScene(scene2);
-                tableChoiceBox.setValue(null);
+                MainController.secondStage.setScene(scene2);
+                tableNameChoiceBox.setValue(null);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -67,9 +69,16 @@ public class ChooseTableController implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader();
         AnchorPane root;
         try {
-            InsertController.setTableName(tableChoiceBox.getValue());
-            root = fxmlLoader.load(getClass().getResource("InsertView.fxml").openStream());
+            if(tableNameChoiceBox.getValue() != null) {
+                InsertController insertController = new InsertController(tableNameChoiceBox.getValue());
+                fxmlLoader.setController(insertController);
+                root = fxmlLoader.load(getClass().getResource("InsertView.fxml").openStream());
+                Scene scene2 = new Scene(root);
 
+                //InsertController insertController = fxmlLoader.getController();
+                //insertController.setTableName(tableNameChoiceBox.getValue());
+                MainController.secondStage.setScene(scene2);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

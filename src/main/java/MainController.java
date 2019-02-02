@@ -32,14 +32,14 @@ public class MainController implements Initializable {
     private ObservableList<ObservableList> data;
     boolean isOpen = false;
     static CheckBox[] columnCheckBoxes;
-    static Stage selectStage;
+    static Stage secondStage;
     static byte menuChoice;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         sqlCon = new SQLConnection();
         sqlCon.setConnection();
-        selectStage = new Stage();
+        secondStage = new Stage();
     }
 
      void populateTableView(String statement) {
@@ -108,10 +108,10 @@ public class MainController implements Initializable {
             if(!isOpen) {
                 VBox root = FXMLLoader.load(getClass().getResource("chooseTableView.fxml"));
                 Scene scene = new Scene(root);
-                selectStage.setScene(scene);
-                selectStage.setResizable(false);
-                selectStage.show();
-                selectStage.setOnCloseRequest(e -> {
+                secondStage.setScene(scene);
+                secondStage.setResizable(false);
+                secondStage.show();
+                secondStage.setOnCloseRequest(e -> {
                     isOpen = false;
                 });
 

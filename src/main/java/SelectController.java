@@ -46,7 +46,7 @@ public class SelectController implements Initializable {
         statement.append(" from ").append(tableLabel.getText());
         MainController controller = JDBC.fxmlLoader.getController();
         controller.populateTableView(statement.toString());
-        MainController.selectStage.close();
+        MainController.secondStage.close();
         controller.isOpen = false;
     }
 }

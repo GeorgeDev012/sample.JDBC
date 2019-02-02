@@ -94,6 +94,20 @@ public class SQLConnection {
         SQLConnection.rowCount = rowCount;
     }
 
+    int getRowCount(String tableName) {
+        int rowCount = 0;
+        try {
+
+            rs = con.createStatement().executeQuery("select count(1) from " + tableName);
+            rs.next();
+            rowCount = rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return rowCount;
+    }
+
 
 
 }
