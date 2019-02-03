@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChooseTableController implements Initializable {
-    @FXML public ChoiceBox<String> tableNameChoiceBox;
+    @FXML private ChoiceBox<String> tableNameChoiceBox;
 
     private SQLConnection sqlCon;
 
