@@ -1,16 +1,7 @@
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.util.Callback;
-import oracle.jdbc.OracleTranslatingConnection;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SQLConnection {
     private ObservableList<ObservableList> data;
@@ -118,14 +109,14 @@ public class SQLConnection {
         return rowCount;
     }
 
-    boolean insert(String statement) {
+    boolean DMLQuery(String statement) {
         try {
             con.createStatement().executeQuery(statement);
 
             return true;
         } catch(SQLException e) {
             //e.printStackTrace();
-            System.out.println("Incorrect SQL statement");
+            //System.out.println("Incorrect SQL statement");
             return false;
         }
 

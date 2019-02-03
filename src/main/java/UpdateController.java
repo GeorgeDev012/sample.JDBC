@@ -1,12 +1,10 @@
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -65,7 +63,7 @@ public class UpdateController implements Initializable {
         if(!stringBuilder.toString().contains("where")) stringBuilder.setLength(stringBuilder.length() - 5);
         String statement = stringBuilder.toString();
         if(statement.contains("=") && statement.contains("set")) {
-            boolean isStatementCorrect = sqlCon.insert(statement);
+            boolean isStatementCorrect = sqlCon.DMLQuery(statement);
             if(isStatementCorrect) {
                 someDataLabel.setTextFill(Color.GREEN);
                 someDataLabel.setText("Data updated successfully.");

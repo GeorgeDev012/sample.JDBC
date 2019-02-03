@@ -1,14 +1,13 @@
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -16,6 +15,7 @@ public class InsertController implements Initializable {
 
     @FXML private VBox columnsVBox;
     @FXML private Label insertIntoTableLabel;
+    @FXML private Label confirmationLabel;
 
     private String tableName;
     private SQLConnection sqlCon;
@@ -52,7 +52,14 @@ public class InsertController implements Initializable {
         stringBuilder.setLength(stringBuilder.length() - 2);
         stringBuilder.append(")");
         String statement = stringBuilder.toString();
-        sqlCon.insert(statement);
+        if(sqlCon.DMLQuery(statement)) {
+            confirmationLabel.setTextFill(Color.GREEN);
+            confirmationLabel.setText("Row successfully inserted.");
+        }
+        else {
+            confirmationLabel.setTextFill(Color.RED);
+            confirmationLabel.setText("Inserted incorrect data or row already exists.");
+        }
     }
 
     private void getStatementPartFromVBoxColumns(StringBuilder stringBuilder) {
