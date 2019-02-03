@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="updateTableLabel" layoutX="14.0" layoutY="14.0" text="Update">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <VBox fx:id="columnsVBox" layoutX="63.0" layoutY="44.0" prefHeight="200.0" prefWidth="150.0" />
+      <Label id="whereLabel" layoutX="240.0" layoutY="41.0" text="where">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <VBox fx:id="columnsVBox2" layoutX="315.0" layoutY="44.0" prefHeight="200.0" prefWidth="150.0" />
+      <Button layoutX="496.0" layoutY="41.0" mnemonicParsing="false" onAction="#onUpdateButton" text="Submit" />
+      <Label fx:id="someDataLabel" layoutX="191.0" layoutY="302.0" textFill="RED">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

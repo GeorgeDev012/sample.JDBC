@@ -118,12 +118,15 @@ public class SQLConnection {
         return rowCount;
     }
 
-    void insert(String statement) {
+    boolean insert(String statement) {
         try {
-            rs = con.createStatement().executeQuery(statement);
-            //message from database
+            con.createStatement().executeQuery(statement);
+
+            return true;
         } catch(SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Incorrect SQL statement");
+            return false;
         }
 
     }

@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
-import org.hibernate.sql.Select;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +23,6 @@ public class ChooseTableController implements Initializable {
         sqlCon = new SQLConnection();
         sqlCon.setConnection();
         ObservableList<String> abc = sqlCon.getTablesNames();
-        System.out.println(tableNameChoiceBox + " " + abc);
         tableNameChoiceBox.setItems(abc);
     }
 
@@ -34,8 +32,8 @@ public class ChooseTableController implements Initializable {
             break;
             case 2: insertMenuItem();
             break;
-//            case 3: updateMenuItem();
-//            break;
+            case 3: updateMenuItem();
+            break;
 //            case 4: deleteMenuItem();
 //            break;
         }
@@ -65,6 +63,15 @@ public class ChooseTableController implements Initializable {
         }
     }
 
+    private CheckBox[] setCheckBoxesLayout(CheckBox[] checkBoxes) {
+        for(int i=0; i<checkBoxes.length; i++) {
+            checkBoxes[i].setLayoutX(
+                    (221 - 14.0)/2);
+            checkBoxes[i].setLayoutY(18 + i*30);
+        }
+        return checkBoxes;
+    }
+
     private void insertMenuItem() {
         FXMLLoader fxmlLoader = new FXMLLoader();
         AnchorPane root;
@@ -72,7 +79,7 @@ public class ChooseTableController implements Initializable {
             if(tableNameChoiceBox.getValue() != null) {
                 InsertController insertController = new InsertController(tableNameChoiceBox.getValue());
                 fxmlLoader.setController(insertController);
-                root = fxmlLoader.load(getClass().getResource("InsertView.fxml").openStream());
+                root = fxmlLoader.load(getClass().getResource("insertView.fxml").openStream());
                 Scene scene2 = new Scene(root);
 
                 MainController.secondStage.setScene(scene2);
@@ -83,12 +90,22 @@ public class ChooseTableController implements Initializable {
         }
     }
 
-    private CheckBox[] setCheckBoxesLayout(CheckBox[] checkBoxes) {
-        for(int i=0; i<checkBoxes.length; i++) {
-            checkBoxes[i].setLayoutX(
-                    (221 - 14.0)/2);
-            checkBoxes[i].setLayoutY(18 + i*30);
+    private void updateMenuItem() {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        AnchorPane root;
+        try {
+            if(tableNameChoiceBox.getValue() != null) {
+                UpdateController updateController = new UpdateController(tableNameChoiceBox.getValue());
+                fxmlLoader.setController(updateController);
+                root = fxmlLoader.load(getClass().getResource("UpdateView.fxml").openStream());
+                Scene scene2 = new Scene(root);
+
+                MainController.secondStage.setScene(scene2);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return checkBoxes;
     }
+
 }

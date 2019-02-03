@@ -30,7 +30,6 @@ public class InsertController implements Initializable {
         sqlCon = new SQLConnection();
         sqlCon.setConnection();
         addColumnsToVBox(sqlCon.getColumnNames(tableName));
-        System.out.println(tableName);
         resultSet = (sqlCon.getResultSetOfColumns(tableName));
         insertIntoTableLabel.setText("Insert into " + tableName + "\n values");
     }
@@ -47,8 +46,17 @@ public class InsertController implements Initializable {
     @FXML void insertButtonAction() {
         StringBuilder stringBuilder = new StringBuilder("Insert into " + tableName + " values (");
 
-        boolean[] varCharColumns = isVarChar();
+        getStatementPartFromVBoxColumns(stringBuilder);
 
+
+        stringBuilder.setLength(stringBuilder.length() - 2);
+        stringBuilder.append(")");
+        String statement = stringBuilder.toString();
+        sqlCon.insert(statement);
+    }
+
+    private void getStatementPartFromVBoxColumns(StringBuilder stringBuilder) {
+        boolean[] varCharColumns = Utilities.isVarChar(resultSet);
         int i = 0;
         for(Node columnName : columnsVBox.getChildren()) {
             if(columnName instanceof TextField) {
@@ -61,26 +69,8 @@ public class InsertController implements Initializable {
             }
             i++;
         }
-
-
-        stringBuilder.setLength(stringBuilder.length() - 2);
-        stringBuilder.append(")");
-        String statement = stringBuilder.toString();
-        sqlCon.insert(statement);
     }
 
-    boolean[] isVarChar() {
-        boolean[] isVarChar = null;
-        try {
-             isVarChar = new boolean[resultSet.getMetaData().getColumnCount()];
-             for(int i = 0; i < resultSet.getMetaData().getColumnCount(); i++) {
-                 isVarChar[i] = resultSet.getMetaData().getColumnClassName(i + 1).equals("java.lang.String");
-                 System.out.println(isVarChar[i]);
-             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return isVarChar;
-    }
+
 
 }
