@@ -24,7 +24,7 @@ public class SelectController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         SQLConnection sqlCon = new SQLConnection();
-        sqlCon.setConnection();
+        SQLConnection.setConnection();
 
     }
 

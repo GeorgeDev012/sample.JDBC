@@ -21,7 +21,7 @@ public class ChooseTableController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         sqlCon = new SQLConnection();
-        sqlCon.setConnection();
+        SQLConnection.setConnection();
         ObservableList<String> abc = sqlCon.getTablesNames();
         tableNameChoiceBox.setItems(abc);
     }
@@ -34,8 +34,8 @@ public class ChooseTableController implements Initializable {
             break;
             case 3: updateMenuItem();
             break;
-//            case 4: deleteMenuItem();
-//            break;
+            case 4: deleteMenuItem();
+            break;
         }
     }
 
@@ -98,6 +98,24 @@ public class ChooseTableController implements Initializable {
                 UpdateController updateController = new UpdateController(tableNameChoiceBox.getValue());
                 fxmlLoader.setController(updateController);
                 root = fxmlLoader.load(getClass().getResource("UpdateView.fxml").openStream());
+                Scene scene2 = new Scene(root);
+
+                MainController.secondStage.setScene(scene2);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deleteMenuItem() {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        AnchorPane root;
+        try {
+            if(tableNameChoiceBox.getValue() != null) {
+                DeleteController deleteController = new DeleteController(tableNameChoiceBox.getValue());
+                fxmlLoader.setController(deleteController);
+                root = fxmlLoader.load(getClass().getResource("DeleteView.fxml").openStream());
                 Scene scene2 = new Scene(root);
 
                 MainController.secondStage.setScene(scene2);

@@ -29,7 +29,7 @@ public class UpdateController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         updateTableLabel.setText("Update " + tableName + "\nset");
         sqlCon = new SQLConnection();
-        sqlCon.setConnection();
+        SQLConnection.setConnection();
         resultSet = (sqlCon.getResultSetOfColumns(tableName));
         addColumnsToVBox(sqlCon.getColumnNames(tableName));
     }
@@ -61,7 +61,9 @@ public class UpdateController implements Initializable {
 
         stringBuilder.setLength(stringBuilder.length() - 2);
         if(!stringBuilder.toString().contains("where")) stringBuilder.setLength(stringBuilder.length() - 5);
+        else stringBuilder.setLength(stringBuilder.length() - 3);
         String statement = stringBuilder.toString();
+        System.out.println(statement);
         if(statement.contains("=") && statement.contains("set")) {
             boolean isStatementCorrect = sqlCon.DMLQuery(statement);
             if(isStatementCorrect) {
@@ -77,6 +79,7 @@ public class UpdateController implements Initializable {
             someDataLabel.setTextFill(Color.RED);
             someDataLabel.setText("Please insert missing data");
         }
+        System.out.println(statement);
     }
 
     private void getStatementPartFromVBoxColumns(StringBuilder stringBuilder, VBox columnsVBox) {
@@ -84,16 +87,33 @@ public class UpdateController implements Initializable {
         int i = 0;
         for(Node columnName : columnsVBox.getChildren()) {
             if(columnName instanceof TextField) {
-                if( ((TextField) columnName).getText().equals("")) stringBuilder.append("");
-                else if(varCharColumns[i]){
-                    stringBuilder.append(( (TextField) columnName).getPromptText()).append(" = ");
-                    stringBuilder.append('\'').append(( (TextField) columnName).getText()).append('\'');
-                    stringBuilder.append(", ");
+                if(stringBuilder.toString().contains("where")) {
+                    if (!(( (TextField) columnName).getText().equals(""))) {
+                        if (varCharColumns[i]) {
+                            stringBuilder.append(((TextField) columnName).getPromptText()).append(" = ");
+                            stringBuilder.append('\'').append(((TextField) columnName).getText()).append('\'');
+                            stringBuilder.append(" and ");
+                        }
+                        else {
+                            stringBuilder.append(((TextField) columnName).getPromptText()).append(" = ");
+                            stringBuilder.append(((TextField) columnName).getText());
+                            stringBuilder.append(" and ");
+                        }
+                    }
                 }
                 else {
-                    stringBuilder.append(( (TextField) columnName).getPromptText()).append(" = ");
-                    stringBuilder.append(( (TextField) columnName).getText());
-                    stringBuilder.append(", ");
+                    if (!(( (TextField) columnName).getText().equals(""))) {
+                        if (varCharColumns[i]) {
+                            stringBuilder.append(((TextField) columnName).getPromptText()).append(" = ");
+                            stringBuilder.append('\'').append(((TextField) columnName).getText()).append('\'');
+                            stringBuilder.append(", ");
+                        }
+                        else {
+                            stringBuilder.append(((TextField) columnName).getPromptText()).append(" = ");
+                            stringBuilder.append(((TextField) columnName).getText());
+                            stringBuilder.append(", ");
+                        }
+                    }
                 }
             }
             i++;

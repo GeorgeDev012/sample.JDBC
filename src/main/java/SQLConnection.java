@@ -8,21 +8,25 @@ public class SQLConnection {
     private Statement st;
     private ResultSetMetaData rsmd;
     private static int rowCount;
-    private Connection con;
+    private static Connection con;
     private ResultSet rs;
 
 
-    Connection getConnection() {
+    static Connection getConnection() {
+        if(con == null) setConnection();
         return con;
     }
 
-    void setConnection() {
+    static void setConnection() {
         try {
             if(con == null) con = DriverManager.getConnection("jdbc:oracle:thin:@155.158.112.45:1521:oltpstud","ziibd38","haslo2018");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
+
 
     ObservableList<String> getTablesNames() {
         ObservableList<String> list = FXCollections.observableArrayList();

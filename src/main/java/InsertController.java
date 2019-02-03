@@ -28,7 +28,7 @@ public class InsertController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         sqlCon = new SQLConnection();
-        sqlCon.setConnection();
+        SQLConnection.setConnection();
         addColumnsToVBox(sqlCon.getColumnNames(tableName));
         resultSet = (sqlCon.getResultSetOfColumns(tableName));
         insertIntoTableLabel.setText("Insert into " + tableName + "\n values");
